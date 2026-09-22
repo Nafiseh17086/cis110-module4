@@ -1,0 +1,19 @@
+# Runs the Lab 4 self-check automatically every time work is pushed to GitHub.
+# A green tick on the commit means every auto-checked exercise passes.
+name: Lab 4 self-check
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run the self-check
+        run: python check_my_work.py

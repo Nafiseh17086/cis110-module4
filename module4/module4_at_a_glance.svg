@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 300" width="960" height="300" font-family="Helvetica, Arial, sans-serif">
+<rect width="960" height="300" rx="14" fill="#ffffff"/>
+<text x="480" y="36" text-anchor="middle" font-size="21" font-weight="bold" fill="#1f2937">Module 4 at a glance: your code first, the suggestion second</text>
+<rect x="20" y="70" width="140" height="120" rx="12" fill="#fff" stroke="#4E2A84" stroke-width="2.5"/>
+<circle cx="42" cy="94" r="13" fill="#4E2A84"/><text x="42" y="99" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">1</text>
+<text x="62" y="100" font-size="16" font-weight="bold" fill="#4E2A84">Read</text>
+<text x="90.0" y="142" text-anchor="middle" font-size="12.5" fill="#1f2937">PY4E Ch 6 + 8</text>
+<text x="90.0" y="162" text-anchor="middle" font-size="12.5" fill="#1f2937">Tutorial 5.1-5.3</text>
+<path d="M162 130 L178 130" stroke="#9ca3af" stroke-width="2"/><path d="M173 125 L179 130 L173 135" fill="none" stroke="#9ca3af" stroke-width="2"/>
+<rect x="180" y="70" width="140" height="120" rx="12" fill="#fff" stroke="#4E2A84" stroke-width="2.5"/>
+<circle cx="202" cy="94" r="13" fill="#4E2A84"/><text x="202" y="99" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">2</text>
+<text x="222" y="100" font-size="16" font-weight="bold" fill="#4E2A84">Watch</text>
+<text x="250.0" y="142" text-anchor="middle" font-size="12.5" fill="#1f2937">Refactoring with an</text>
+<text x="250.0" y="162" text-anchor="middle" font-size="12.5" fill="#1f2937">AI Assistant (5-6 min)</text>
+<path d="M322 130 L338 130" stroke="#9ca3af" stroke-width="2"/><path d="M333 125 L339 130 L333 135" fill="none" stroke="#9ca3af" stroke-width="2"/>
+<rect x="340" y="70" width="140" height="120" rx="12" fill="#fff" stroke="#1d4ed8" stroke-width="2.5"/>
+<circle cx="362" cy="94" r="13" fill="#1d4ed8"/><text x="362" y="99" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">3</text>
+<text x="382" y="100" font-size="16" font-weight="bold" fill="#1d4ed8">Lab 4  A + B</text>
+<text x="410.0" y="142" text-anchor="middle" font-size="12.5" fill="#1f2937">Your own code.</text>
+<text x="410.0" y="162" text-anchor="middle" font-size="12.5" fill="#1f2937">No AI yet.</text>
+<path d="M482 130 L498 130" stroke="#9ca3af" stroke-width="2"/><path d="M493 125 L499 130 L493 135" fill="none" stroke="#9ca3af" stroke-width="2"/>
+<rect x="500" y="70" width="140" height="120" rx="12" fill="#fff" stroke="#0f8a5f" stroke-width="2.5"/>
+<circle cx="522" cy="94" r="13" fill="#0f8a5f"/><text x="522" y="99" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">4</text>
+<text x="542" y="100" font-size="16" font-weight="bold" fill="#0f8a5f">Save</text>
+<text x="570.0" y="142" text-anchor="middle" font-size="12.5" fill="#1f2937">lab4_working_version</text>
+<text x="570.0" y="162" text-anchor="middle" font-size="12.5" fill="#1f2937">passes the self-check</text>
+<path d="M642 130 L658 130" stroke="#9ca3af" stroke-width="2"/><path d="M653 125 L659 130 L653 135" fill="none" stroke="#9ca3af" stroke-width="2"/>
+<rect x="660" y="70" width="140" height="120" rx="12" fill="#fff" stroke="#c2410c" stroke-width="2.5"/>
+<circle cx="682" cy="94" r="13" fill="#c2410c"/><text x="682" y="99" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">5</text>
+<text x="702" y="100" font-size="16" font-weight="bold" fill="#c2410c">Lab 4  C</text>
+<text x="730.0" y="142" text-anchor="middle" font-size="12.5" fill="#1f2937">Ask for ONE refactor.</text>
+<text x="730.0" y="162" text-anchor="middle" font-size="12.5" fill="#1f2937">Judge it.</text>
+<path d="M802 130 L818 130" stroke="#9ca3af" stroke-width="2"/><path d="M813 125 L819 130 L813 135" fill="none" stroke="#9ca3af" stroke-width="2"/>
+<rect x="820" y="70" width="140" height="120" rx="12" fill="#fff" stroke="#4E2A84" stroke-width="2.5"/>
+<circle cx="842" cy="94" r="13" fill="#4E2A84"/><text x="842" y="99" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">6</text>
+<text x="862" y="100" font-size="16" font-weight="bold" fill="#4E2A84">Reflect</text>
+<text x="890.0" y="142" text-anchor="middle" font-size="12.5" fill="#1f2937">AI-Use Reflection 4</text>
+<text x="890.0" y="162" text-anchor="middle" font-size="12.5" fill="#1f2937">and submit 3 files</text>
+<line x1="650.0" y1="58" x2="650.0" y2="204" stroke="#c2410c" stroke-width="2.5" stroke-dasharray="6 4"/>
+<text x="650.0" y="222" text-anchor="middle" font-size="12" font-weight="bold" fill="#c2410c">AI assistant allowed from here</text>
+<rect x="20" y="236" width="440" height="48" rx="10" fill="#ece6f6"/>
+<text x="36" y="257" font-size="13.5" font-weight="bold" fill="#4E2A84">Discussion 2: Which Data Structure, and Why</text>
+<text x="36" y="275" font-size="12.5" fill="#1f2937">Initial post Thursday 11:59 p.m. CT · two replies by Sunday 11:59 p.m. CT</text>
+<rect x="480" y="236" width="460" height="48" rx="10" fill="#fff4dc"/>
+<text x="496" y="257" font-size="13.5" font-weight="bold" fill="#92400e">Sync Session 2: Debugging Clinic (60 min, recorded)</text>
+<text x="496" y="275" font-size="12.5" fill="#1f2937">Submit your broken code at least 48 hours before the session</text>
+</svg>

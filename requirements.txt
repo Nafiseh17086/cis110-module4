@@ -1,0 +1,8 @@
+# Needed so VS Code can run the Lab 4 notebook
+ipykernel
+
+# Used by the optional chart cell in Lab 4 (not graded)
+matplotlib
+
+# Optional: to use JupyterLab in your browser instead of VS Code, also install:
+# jupyterlab

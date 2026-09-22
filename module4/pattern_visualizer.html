@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Iteration Pattern Visualizer</title>
+<style>
+  :root {
+    --bg: #f7f6fb; --panel: #ffffff; --ink: #1f1a2e; --muted: #5d5670; --line: #ddd8ea;
+    --accent: #4E2A84; --accent-soft: #ece6f6; --cur: #f59e0b; --cur-soft: #fff4dc;
+    --ok: #0f8a5f; --ok-soft: #dcf5ea; --no: #b42318; --no-soft: #fde7e5; --skip: #b9b3c7;
+    --code-bg: #faf9fd;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #15121d; --panel: #1f1b2a; --ink: #eeeaf6; --muted: #aaa3bd; --line: #362f47;
+      --accent: #b69ae6; --accent-soft: #2d2442; --cur: #fbbf24; --cur-soft: #3a2e12;
+      --ok: #4ade9b; --ok-soft: #133528; --no: #ff8a80; --no-soft: #3b1714; --skip: #5d566e;
+      --code-bg: #1a1724;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.5 -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+  .wrap { max-width: 1060px; margin: 0 auto; padding: 24px 16px 48px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  .sub { color: var(--muted); margin: 0 0 20px; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  .tab { border: 1.5px solid var(--line); background: var(--panel); color: var(--ink);
+         padding: 8px 14px; border-radius: 999px; cursor: pointer; font-size: .95rem; }
+  .tab[aria-selected="true"] { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .tab[aria-selected="true"] { color: #15121d; } }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+  .inputs { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: end; margin-bottom: 16px; }
+  label { display: block; font-size: .8rem; color: var(--muted); font-weight: 600; margin-bottom: 4px;
+          text-transform: uppercase; letter-spacing: .04em; }
+  input[type=text] { font: 15px/1.3 Menlo, Consolas, monospace; padding: 8px 10px; border-radius: 8px;
+          border: 1.5px solid var(--line); background: var(--code-bg); color: var(--ink); min-width: 0; width: 100%; }
+  .grow { flex: 1 1 320px; }
+  .small { flex: 0 0 110px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; }
+  .grid > div { min-width: 0; }
+  @media (max-width: 760px) { .grid { grid-template-columns: 1fr; } }
+  h2 { font-size: .8rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); margin: 0 0 10px; }
+  pre.code { margin: 0; background: var(--code-bg); border-radius: 10px; padding: 10px 0; overflow-x: auto;
+             font: 14.5px/1.7 Menlo, Consolas, monospace; }
+  .ln { display: block; padding: 0 14px 0 8px; border-left: 4px solid transparent; white-space: pre; }
+  .ln .no { color: var(--muted); display: inline-block; width: 1.6em; user-select: none; }
+  .ln.on { background: var(--cur-soft); border-left-color: var(--cur); font-weight: 600; }
+  .items { display: flex; flex-wrap: wrap; gap: 8px; min-height: 48px; }
+  .item { position: relative; padding: 8px 12px; border-radius: 8px; border: 2px solid var(--line);
+          font: 15px Menlo, Consolas, monospace; background: var(--panel); transition: all .2s; }
+  .item .idx { position: absolute; top: -9px; left: 6px; font-size: 10px; background: var(--panel);
+               color: var(--muted); padding: 0 3px; }
+  .item.done { opacity: .55; }
+  .item.cur { border-color: var(--cur); background: var(--cur-soft); transform: translateY(-3px); opacity: 1; }
+  .item.hit { border-color: var(--ok); background: var(--ok-soft); opacity: 1; }
+  .item.miss { border-color: var(--no); }
+  .item.never { border-style: dashed; color: var(--skip); border-color: var(--skip); }
+  table.vars { border-collapse: collapse; width: 100%; table-layout: fixed; font: 14.5px Menlo, Consolas, monospace; }
+  table.vars td { padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; word-break: break-word; }
+  table.vars td:first-child { color: var(--muted); width: 34%; }
+  tr.changed td:last-child { background: var(--accent-soft); font-weight: 700; }
+  .note { margin-top: 14px; padding: 12px 14px; border-radius: 10px; background: var(--accent-soft);
+          border-left: 4px solid var(--accent); min-height: 3.2em; }
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 16px 0; }
+  button.ctl { font: 600 15px/1 inherit; font-family: inherit; padding: 10px 16px; border-radius: 10px; cursor: pointer;
+               border: 1.5px solid var(--accent); background: var(--panel); color: var(--accent); }
+  button.ctl.primary { background: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { button.ctl.primary { color: #15121d; } }
+  button.ctl:disabled { opacity: .4; cursor: default; }
+  .progress { color: var(--muted); font-size: .9rem; margin-left: auto; }
+  .result { font: 600 16px Menlo, Consolas, monospace; }
+  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: .85rem; color: var(--muted); margin-top: 10px; }
+  .sw { display: inline-block; width: 14px; height: 14px; border-radius: 4px; vertical-align: -2px; margin-right: 5px; border: 2px solid; }
+  .q { margin-top: 18px; }
+  .q summary { cursor: pointer; font-weight: 600; }
+  .q p { margin: 8px 0 0; color: var(--muted); }
+  .pair-row { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+  .pair-row .lbl { font: 13px Menlo, Consolas, monospace; color: var(--muted); width: 70px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Iteration Pattern Visualizer</h1>
+  <p class="sub">CIS 110 · Module 4 — watch a loop run one step at a time. Change the list, then press <b>Step</b>.</p>
+
+  <div class="tabs" role="tablist" id="tabs"></div>
+
+  <div class="card">
+    <div class="inputs" id="inputs"></div>
+    <div class="grid">
+      <div>
+        <h2>The code</h2>
+        <pre class="code" id="code"></pre>
+      </div>
+      <div>
+        <h2 id="itemsTitle">The list</h2>
+        <div id="items"></div>
+        <div class="legend">
+          <span><span class="sw" style="border-color:var(--cur);background:var(--cur-soft)"></span>looking at now</span>
+          <span><span class="sw" style="border-color:var(--ok);background:var(--ok-soft)"></span>matched</span>
+          <span><span class="sw" style="border-color:var(--skip);border-style:dashed"></span>never looked at</span>
+        </div>
+        <h2 style="margin-top:18px">Variables</h2>
+        <table class="vars" id="vars"></table>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="ctl" id="reset">⟲ Reset</button>
+      <button class="ctl" id="back">◀ Back</button>
+      <button class="ctl primary" id="step">Step ▶</button>
+      <button class="ctl" id="play">Play all</button>
+      <span class="progress" id="progress"></span>
+    </div>
+    <div class="note" id="note" aria-live="polite"></div>
+  </div>
+
+  <details class="q" id="question"><summary>Think about it</summary><p id="answer"></p></details>
+</div>
+
+<script>
+const MODES = {
+  accumulate: {
+    tab: "Accumulate",
+    inputs: [{ id: "words", label: "words (comma-separated)", value: "cat, horse, cow, giraffe, hen", cls: "grow" }],
+    code: ["def total_letters(words):", "    total = 0", "    for word in words:",
+           "        total = total + len(word)", "    return total"],
+    question: "What would total be for an empty list? Step through [] to check. Why is that the right answer?",
+    answer: "0. The loop body never runs, so total keeps its starting value. That is why the accumulator starts at 0 and not at the first item: it has to be right even when there are no items.",
+    run(v) {
+      const w = v.words, S = [];
+      S.push({ line: 1, vars: { words: w }, note: "The function is called with a list of " + w.length + " words." });
+      let total = 0;
+      S.push({ line: 2, vars: { words: w, total }, ch: "total", note: "Accumulate starts with an <b>empty result</b>: total = 0." });
+      w.forEach((word, i) => {
+        S.push({ line: 3, cur: i, vars: { words: w, word, total }, ch: "word", note: `Next item: word = "${word}".` });
+        const before = total; total += word.length;
+        S.push({ line: 4, cur: i, vars: { words: w, word, total }, ch: "total",
+                 note: `Fold it in: total = ${before} + len("${word}") = ${before} + ${word.length} = <b>${total}</b>.` });
+      });
+      S.push({ line: 3, vars: { words: w, total }, note: "No items left, so the loop ends." });
+      S.push({ line: 5, vars: { words: w, total }, result: total,
+               note: w.length ? `Return <b>${total}</b>. Every item was visited, and each one changed the one result.`
+                                 : `The list was empty, so the loop body never ran. Return the starting value, <b>0</b>.` });
+      return S;
+    }
+  },
+  search: {
+    tab: "Search",
+    inputs: [{ id: "words", label: "words (comma-separated)", value: "cat, horse, cow, hen, hat", cls: "grow" },
+             { id: "letter", label: "letter", value: "h", cls: "small" }],
+    code: ["def first_starting_with(words, letter):", "    for word in words:", "        if word.startswith(letter):",
+           "            return word", '    return ""'],
+    question: "Move return \"\" inside the loop, under an else. What would happen with this list?",
+    answer: "It would check \"cat\", fail, and return \"\" straight away — without ever looking at \"horse\". The \"not found\" answer only makes sense after every item has been checked, so it goes after the loop.",
+    run(v) {
+      const w = v.words, L = v.letter, S = [];
+      S.push({ line: 1, vars: { words: w, letter: L }, note: `Looking for the first word that starts with "${L}".` });
+      for (let i = 0; i < w.length; i++) {
+        const word = w[i];
+        S.push({ line: 2, cur: i, doneBefore: i, vars: { words: w, letter: L, word }, ch: "word", note: `Next item: word = "${word}".` });
+        const hit = word.startsWith(L);
+        S.push({ line: 3, cur: i, doneBefore: i, miss: hit ? null : i, vars: { words: w, letter: L, word }, ch: null,
+                 note: `"${word}".startswith("${L}") is <b>${hit ? "True" : "False"}</b>.` + (hit ? "" : " Keep looking.") });
+        if (hit) {
+          S.push({ line: 4, hit: i, never: i + 1, doneBefore: i, vars: { words: w, letter: L, word }, result: JSON.stringify(word),
+                   note: `Found it: return "${word}" and <b>stop</b>.` + (i + 1 < w.length ? ` The ${w.length - i - 1} item(s) after it are never looked at.` : "") });
+          return S;
+        }
+      }
+      S.push({ line: 2, doneBefore: w.length, vars: { words: w, letter: L }, note: "Every item checked, none matched. The loop ends." });
+      S.push({ line: 5, doneBefore: w.length, vars: { words: w, letter: L }, result: '""',
+               note: 'Only now, <b>after</b> the loop, is it safe to say "not found": return "".' });
+      return S;
+    }
+  },
+  filter: {
+    tab: "Filter",
+    inputs: [{ id: "words", label: "words (comma-separated)", value: "cat, horse, cow, giraffe, hen", cls: "grow" },
+             { id: "n", label: "n", value: "3", cls: "small" }],
+    code: ["def only_long(words, n):", "    result = []", "    for word in words:",
+           "        if len(word) > n:", "            result.append(word)", "    return result"],
+    question: "Change > to >= in your head. Which extra words would get through for n = 3?",
+    answer: "Every word with exactly 3 letters: cat, cow and hen. The boundary is where filters go wrong, so always test a word that is exactly n long.",
+    run(v) {
+      const w = v.words, n = parseInt(v.n, 10) || 0, S = [], result = [], hits = [];
+      S.push({ line: 1, vars: { words: w, n }, note: `Keep only the words longer than ${n} characters.` });
+      S.push({ line: 2, vars: { words: w, n, result: [...result] }, ch: "result", note: "Filter starts with an <b>empty new list</b>." });
+      w.forEach((word, i) => {
+        S.push({ line: 3, cur: i, hits: [...hits], vars: { words: w, n, word, result: [...result] }, ch: "word", note: `Next item: word = "${word}".` });
+        const ok = word.length > n;
+        S.push({ line: 4, cur: i, hits: [...hits], miss: ok ? null : i, vars: { words: w, n, word, result: [...result] },
+                 note: `len("${word}") is ${word.length}. Is ${word.length} > ${n}? <b>${ok ? "True" : "False"}</b>` + (ok ? "" : " — skip it.") });
+        if (ok) {
+          result.push(word); hits.push(i);
+          S.push({ line: 5, cur: i, hits: [...hits], vars: { words: w, n, word, result: [...result] }, ch: "result",
+                   note: `Keep it: append "${word}". The original list is not changed.` });
+        }
+      });
+      S.push({ line: 6, hits: [...hits], vars: { words: w, n, result: [...result] }, result: JSON.stringify(result),
+               note: `Return ${result.length} of ${w.length} items, <b>in their original order</b>.` });
+      return S;
+    }
+  },
+  tally: {
+    tab: "Count with two lists",
+    inputs: [{ id: "words", label: "votes (comma-separated)", value: "Bo, Ana, Bo, Chidi, Ana, Bo", cls: "grow" }],
+    code: ["names = []", "tallies = []", "for vote in votes:", "    if vote in names:",
+           "        position = names.index(vote)", "        tallies[position] = tallies[position] + 1",
+           "    else:", "        names.append(vote)", "        tallies.append(1)"],
+    question: "Why must names and tallies always stay the same length?",
+    answer: "Because position i in one list must describe the same thing as position i in the other. If you append a name but forget to append its 1, every count after it is attached to the wrong name. (Module 5's dictionaries keep each name and count together for you.)",
+    run(v) {
+      const votes = v.words, S = [], names = [], tallies = [];
+      const snap = (extra) => Object.assign({ votes, names: [...names], tallies: [...tallies] }, extra || {});
+      S.push({ line: 1, pairs: [[], []], vars: snap(), ch: "names", note: "Two empty lists that will grow <b>side by side</b>." });
+      S.push({ line: 2, pairs: [[], []], vars: snap(), ch: "tallies", note: "names[i] will have tallies[i] votes." });
+      votes.forEach((vote, i) => {
+        S.push({ line: 3, cur: i, pairs: [[...names], [...tallies]], vars: snap({ vote }), ch: "vote", note: `Next vote: "${vote}".` });
+        const seen = names.includes(vote);
+        S.push({ line: 4, cur: i, pairs: [[...names], [...tallies]], vars: snap({ vote }),
+                 note: `SEARCH: is "${vote}" already in names? <b>${seen ? "Yes" : "No"}</b>.` });
+        if (seen) {
+          const p = names.indexOf(vote);
+          S.push({ line: 5, cur: i, pairs: [[...names], [...tallies]], mark: p, vars: snap({ vote, position: p }), ch: "position",
+                   note: `It is at position ${p}.` });
+          tallies[p] += 1;
+          S.push({ line: 6, cur: i, pairs: [[...names], [...tallies]], mark: p, vars: snap({ vote, position: p }), ch: "tallies",
+                   note: `ACCUMULATE: tallies[${p}] goes up to <b>${tallies[p]}</b>.` });
+        } else {
+          names.push(vote);
+          S.push({ line: 8, cur: i, pairs: [[...names], [...tallies]], mark: names.length - 1, vars: snap({ vote }), ch: "names",
+                   note: `First time: add "${vote}" to the end of names…` });
+          tallies.push(1);
+          S.push({ line: 9, cur: i, pairs: [[...names], [...tallies]], mark: names.length - 1, vars: snap({ vote }), ch: "tallies",
+                   note: `…and a 1 to the end of tallies, at the same position.` });
+        }
+      });
+      S.push({ line: 3, pairs: [[...names], [...tallies]], vars: snap(), result: names.map((n, i) => n + ": " + tallies[i]).join(", "),
+               note: "All votes counted. Read the two lists together, position by position." });
+      return S;
+    }
+  }
+};
+
+let mode = "accumulate", steps = [], at = 0, timer = null;
+const $ = (id) => document.getElementById(id);
+
+function parseList(s) { return s.split(",").map(x => x.trim()).filter(x => x !== ""); }
+function fmt(v) {
+  if (Array.isArray(v)) return "[" + v.map(x => typeof x === "string" ? JSON.stringify(x) : x).join(", ") + "]";
+  return typeof v === "string" ? JSON.stringify(v) : String(v);
+}
+
+function buildTabs() {
+  $("tabs").innerHTML = "";
+  Object.entries(MODES).forEach(([key, m]) => {
+    const b = document.createElement("button");
+    b.className = "tab"; b.textContent = m.tab; b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", key === mode);
+    b.onclick = () => { mode = key; buildTabs(); buildInputs(); rebuild(); };
+    $("tabs").appendChild(b);
+  });
+}
+
+function buildInputs() {
+  const m = MODES[mode];
+  $("inputs").innerHTML = "";
+  m.inputs.forEach(inp => {
+    const d = document.createElement("div"); d.className = inp.cls;
+    d.innerHTML = `<label for="in_${inp.id}">${inp.label}</label><input type="text" id="in_${inp.id}" value="${inp.value}">`;
+    $("inputs").appendChild(d);
+    d.querySelector("input").addEventListener("input", rebuild);
+  });
+  $("code").innerHTML = m.code.map((l, i) =>
+    `<span class="ln" data-l="${i + 1}"><span class="no">${i + 1}</span>${l.replace(/&/g, "&amp;").replace(/</g, "&lt;")}</span>`).join("");
+  $("itemsTitle").textContent = mode === "tally" ? "The votes, and the two lists" : "The list";
+  $("question").open = false;
+  $("question").querySelector("summary").textContent = "Think about it: " + m.question;
+  $("answer").textContent = m.answer;
+}
+
+function rebuild() {
+  stop();
+  const m = MODES[mode], v = {};
+  m.inputs.forEach(inp => { v[inp.id] = $("in_" + inp.id).value; });
+  v.words = parseList(v.words);
+  steps = m.run(v); at = 0; render();
+}
+
+function render() {
+  const s = steps[at], m = MODES[mode];
+  document.querySelectorAll(".ln").forEach(el => el.classList.toggle("on", +el.dataset.l === s.line));
+  const list = s.vars.words || s.vars.votes || [];
+  const items = list.map((w, i) => {
+    let c = "item";
+    const visitedUpTo = s.doneBefore !== undefined ? s.doneBefore : (s.cur !== undefined ? s.cur : (s.line === m.code.length || s.result !== undefined ? list.length : 0));
+    if (i < visitedUpTo) c += " done";
+    if (s.hits && s.hits.includes(i)) c += " hit";
+    if (s.hit === i) c += " hit";
+    if (s.cur === i) c += " cur";
+    if (s.miss === i) c += " miss";
+    if (s.never !== undefined && i >= s.never) c += " never";
+    return `<span class="${c}"><span class="idx">${i}</span>${w.replace(/</g, "&lt;")}</span>`;
+  }).join("");
+  let html = `<div class="items">${items || '<span style="color:var(--muted)">(empty list)</span>'}</div>`;
+  if (s.pairs) {
+    const row = (lbl, arr) => `<div class="pair-row"><span class="lbl">${lbl}</span>` +
+      (arr.length ? arr.map((x, i) => `<span class="item${s.mark === i ? " hit" : ""}"><span class="idx">${i}</span>${x}</span>`).join("")
+                  : '<span style="color:var(--muted)">[ ]</span>') + "</div>";
+    html += `<div style="margin-top:16px">${row("names", s.pairs[0])}${row("tallies", s.pairs[1])}</div>`;
+  }
+  $("items").innerHTML = html;
+  $("vars").innerHTML = Object.entries(s.vars).map(([k, val]) =>
+    `<tr class="${k === s.ch ? "changed" : ""}"><td>${k}</td><td>${fmt(val).replace(/</g, "&lt;")}</td></tr>`).join("") +
+    (s.result !== undefined ? `<tr class="changed"><td>result</td><td class="result">${String(s.result).replace(/</g, "&lt;")}</td></tr>` : "");
+  $("note").innerHTML = s.note;
+  $("progress").textContent = `step ${at + 1} of ${steps.length}`;
+  $("back").disabled = at === 0;
+  $("step").disabled = at === steps.length - 1;
+}
+
+function stop() { if (timer) { clearInterval(timer); timer = null; $("play").textContent = "Play all"; } }
+$("step").onclick = () => { stop(); if (at < steps.length - 1) { at++; render(); } };
+$("back").onclick = () => { stop(); if (at > 0) { at--; render(); } };
+$("reset").onclick = () => { stop(); at = 0; render(); };
+$("play").onclick = () => {
+  if (timer) { stop(); return; }
+  if (at === steps.length - 1) at = 0;
+  $("play").textContent = "Pause";
+  timer = setInterval(() => { if (at < steps.length - 1) { at++; render(); } else stop(); }, 1100);
+};
+document.addEventListener("keydown", e => {
+  if (e.target.tagName === "INPUT") return;
+  if (e.key === "ArrowRight") $("step").click();
+  if (e.key === "ArrowLeft") $("back").click();
+});
+
+buildTabs(); buildInputs(); rebuild();
+</script>
+</body>
+</html>
