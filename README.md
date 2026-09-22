@@ -24,11 +24,17 @@ search and filter**.
 | [`lab4_text_analyzer.ipynb`](lab4_text_analyzer.ipynb) | **The lab.** Work through it top to bottom. |
 | [`ai_use_reflection_4.md`](ai_use_reflection_4.md) | AI-Use Reflection 4: fill in and submit |
 | `check_my_work.py` | Self-check to run before you submit |
-| [Videos and media](module4/videos_and_media.md) | *Refactoring with an AI Assistant: A Worked Example* |
+| [Videos and media](module4/videos_and_media.md) | *Refactoring with an AI Assistant* screencast, plus three one-minute explainers |
 | [Worked refactor example](module4/refactor_worked_example/ai_suggestion.md) | The code from the video, and a model Part C |
 | [Discussion 2: Which Data Structure, and Why](module4/discussion_2_which_data_structure.md) | The three scenarios |
 | [Sync Session 2: Debugging Clinic](module4/sync_session_2_debugging_clinic.md) | Agenda and how to prepare |
 | [Debugging Clinic submission form](module4/debugging_clinic_submission_form.md) | Due **48 hours before** the session |
+
+### Short videos (about 1 minute each)
+| | | |
+|---|---|---|
+| [![Why Programmers Must Still Learn to Write Code](module4/videos/why_programmers_must_still_learn_to_write_code_poster.jpg)](module4/videos/why_programmers_must_still_learn_to_write_code.mp4) | [![Why Reading AI Code Is Harder Than Writing It](module4/videos/why_reading_ai_code_is_harder_than_writing_it_poster.jpg)](module4/videos/why_reading_ai_code_is_harder_than_writing_it.mp4) | [![How to Write an AI Reflection Log](module4/videos/how_to_write_an_ai_reflection_log_poster.jpg)](module4/videos/how_to_write_an_ai_reflection_log.mp4) |
+| Why Programmers Must Still Learn to Write Code | Why Reading AI Code Is Harder Than Writing It | How to Write an AI Reflection Log |
 
 ### Visual tools
 | | |

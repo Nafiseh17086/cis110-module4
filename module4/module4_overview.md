@@ -86,11 +86,16 @@ the same ideas with many more small examples.
 | [Python Tutor](https://pythontutor.com/python-compiler.html#mode=edit) | Paste any short program and watch the lists as arrows and boxes. Useful for seeing two names point at one list. |
 | Your own bar chart | Exercise 9 of the lab draws one in plain text, and an optional cell redraws it with matplotlib. |
 
-## This module's video
+## This module's videos
 
-See [Videos and media](videos_and_media.md): **Refactoring with an AI Assistant:
-A Worked Example** (5–6 min). The code from the video is in
-[`refactor_worked_example/`](refactor_worked_example/ai_suggestion.md).
+See [Videos and media](videos_and_media.md):
+
+- **Refactoring with an AI Assistant: A Worked Example** (5–6 min). The code
+  from the video is in [`refactor_worked_example/`](refactor_worked_example/ai_suggestion.md).
+- Three one-minute explainers:
+  [Why Programmers Must Still Learn to Write Code](videos/why_programmers_must_still_learn_to_write_code.mp4),
+  [Why Reading AI Code Is Harder Than Writing It](videos/why_reading_ai_code_is_harder_than_writing_it.mp4) and
+  [How to Write an AI Reflection Log](videos/how_to_write_an_ai_reflection_log.mp4).
 
 ## Live session
 

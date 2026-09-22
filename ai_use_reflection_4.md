@@ -4,7 +4,8 @@
 
 Complete every field. See the Welcome module's guide,
 *How to Complete an AI-Use Reflection*. Its worked example is a Lab 4 reflection,
-so read it before you start.
+so read it before you start, and watch the one-minute video
+[How to Write an AI Reflection Log](module4/videos/how_to_write_an_ai_reflection_log.mp4).
 
 ---
 
